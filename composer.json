@@ -1,6 +1,5 @@
 {
     "name": "lifespikes/monorepo-installer",
-    "version": "1.0.0",
     "type": "composer-plugin",
     "require": {
         "composer-plugin-api": "^2.0"
