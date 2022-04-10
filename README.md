@@ -1,4 +1,6 @@
 # Monorepo Installer
+_Component of `lifespikes/lifespikes`_
+
 This is a composer plugin primarily for use in monorepo environments. As of
 right now this plugin is mostly meant to work hand-in-hand with Symplify's 
 `symplify/monorepo-plugin` package.
