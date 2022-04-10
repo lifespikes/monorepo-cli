@@ -13,6 +13,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreatePackageCommand extends BaseCommand
 {
+    public function cwd(string $path): string
+    {
+        return getcwd() . DIRECTORY_SEPARATOR . $path;
+    }
+
     public function configure()
     {
         $this->setName('workspace:create');
@@ -136,7 +141,7 @@ class CreatePackageCommand extends BaseCommand
 
     public function verifyFileStructure(string $package): string
     {
-        $packageDir = realpath(__DIR__ . '/../../../');
+        $packageDir = $this->cwd('packages');
         $target = "$packageDir/$package";
 
         if (!ctype_alpha(str_replace('-', '', $package))) {
