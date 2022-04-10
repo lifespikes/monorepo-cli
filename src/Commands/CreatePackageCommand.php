@@ -105,7 +105,7 @@ class CreatePackageCommand extends BaseCommand
     {
         $pkgCamelCase = $this->getCamelCase($package);
         $provider = "{$pkgCamelCase}Provider";
-        $namespace = ucfirst($vendor) . '\\' . $pkgCamelCase . '\\';
+        $namespace = $this->getCamelCase($vendor) . '\\' . $pkgCamelCase . '\\';
 
         $this->getApplication()->getIO()
             ->log(LogLevel::INFO, "Installing service provider");
