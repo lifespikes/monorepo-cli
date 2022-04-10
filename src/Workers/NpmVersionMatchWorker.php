@@ -1,12 +1,12 @@
 <?php
 
-namespace Support\Workers;
+namespace LifeSpikes\MonorepoCLI\Workers;
 
 use PharIo\Version\Version;
 use LifeSpikes\MonorepoCLI\Enums\PackageType;
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
-use function Support\package_paths;
+use function LifeSpikes\MonorepoCLI\package_paths;
 
 class NpmVersionMatchWorker implements ReleaseWorkerInterface
 {

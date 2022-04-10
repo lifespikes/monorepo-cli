@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use Composer\Composer;
+use Composer\Autoload\ClassLoader;
 use LifeSpikes\MonorepoCLI\Enums\PackageType;
-use Support\Workers\CopyReleaseFileWorker;
-use Support\Workers\NpmVersionMatchWorker;
-use Support\Workers\UpdateRootVersionWorker;
 use Symplify\MonorepoBuilder\ValueObject\Option;
+use LifeSpikes\MonorepoCLI\Workers\CopyReleaseFileWorker;
+use LifeSpikes\MonorepoCLI\Workers\NpmVersionMatchWorker;
+use LifeSpikes\MonorepoCLI\Workers\UpdateRootVersionWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\PushTagReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\TagVersionReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\PushNextDevReleaseWorker;
@@ -19,6 +21,7 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualDependenciesR
 use function LifeSpikes\MonorepoCLI\package_list;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
+    $composer = new Composer();
     $parameters = $containerConfigurator->parameters();
     $services = $containerConfigurator->services();
 

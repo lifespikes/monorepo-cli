@@ -8,25 +8,33 @@ use Composer\Composer;
 class Config
 {
     static $_instance;
-    private Composer $composer;
+    private array $composer;
 
     private array $config = [];
 
     /* OOP Config Props */
+    public array $ignorePackages    =  [];
 
     public string $cwd;
     public string $owner;
 
-    public array $ignorePackages    =  [];
-    public string $packageDir       =  'packages';
+    public string $packageDir;
 
     public string $monorepoConfig;
     public string $monorepoBuilderBin;
-    public string $composerBin          =  'composer';
+    public string $composerBin =  'composer';
 
-    public function setComposer(Composer $composer)
+    public function __construct()
     {
-        $this->composer = $composer;
+        $this->setComposer();
+    }
+
+    public function setComposer()
+    {
+        $this->composer = json_decode(
+            file_get_contents(getcwd() . '/composer.json'),
+            true
+        );
 
         $this->setDefaultConfig();
         $this->applyUserConfig();
@@ -44,18 +52,19 @@ class Config
     protected function setDefaultConfig()
     {
         $defaultConfigFile = realpath(__DIR__ . '/../../monorepo-builder.php');
-        $root = $this->composer->getPackage()->getName();
+        $root = $this->composer['name'];
         $owner = explode('/', $root)[0];
 
         $this->cwd = getcwd();
+        $this->packageDir = $this->cwd . '/packages';
         $this->owner = $owner;
         $this->monorepoConfig = $defaultConfigFile;
-        $this->monorepoBuilderBin = "vendor/bin/monorepo-builder";
+        $this->monorepoBuilderBin = $this->cwd . '/vendor/bin/monorepo-builder';
     }
 
     public function applyUserConfig()
     {
-        $extra = $this->composer->getPackage()->getExtra();
+        $extra = $this->composer['extra'] ?? [];
 
         foreach (($extra['monorepo-cli'] ?? []) as $key => $value) {
             if (property_exists($this, $key)) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Support\Workers;
+namespace LifeSpikes\MonorepoCLI\Workers;
 
 use PharIo\Version\Version;
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
