@@ -16,9 +16,11 @@ class SymplifyBuilderCommand extends BaseCommand
             ->setDescription('Merge all package dependencies');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         symplifyCmd('merge');
         composerCmd('update');
+
+        return 0;
     }
 }

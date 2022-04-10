@@ -21,8 +21,13 @@ function symplifyCmd(string $cmd)
     $symplifyBin = $config->monorepoBuilderBin;
 
     passthru(
-        sprintf('%s %s --config "%s"', $symplifyBin, $cmd, $config->monorepoConfig)
+        sprintf('%s %s --config "%s"', $symplifyBin, $cmd, $config->monorepoConfig),
+        $resultCode
     );
+
+    if ($resultCode !== 0) {
+        exit;
+    }
 }
 
 function composerCmd(string $cmd)
@@ -30,8 +35,13 @@ function composerCmd(string $cmd)
     $composerBin = config()->composerBin;
 
     passthru(
-        sprintf('%s %s', $composerBin, $cmd)
+        sprintf('%s %s', $composerBin, $cmd),
+        $resultCode
     );
+
+    if ($resultCode !== 0) {
+        exit;
+    }
 }
 
 function get_packages(PackageType $type, bool $paths): array

@@ -24,12 +24,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     /* Include our package directory */
     $parameters->set(Option::PACKAGE_DIRECTORIES, [
-        'packages'
+        \LifeSpikes\MonorepoCLI\config()->packageDir
     ]);
 
     $parameters->set(Option::PACKAGE_DIRECTORIES_EXCLUDES, [
         ...package_list(PackageType::NODE),
-        'monorepo-cli'
+        ...\LifeSpikes\MonorepoCLI\config()->ignorePackages
     ]);
 
     /* Release workers */

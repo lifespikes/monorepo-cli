@@ -17,7 +17,7 @@ class Config
     public string $cwd;
     public string $owner;
 
-    public array $ignorePackages    =  ['laravel-bare', 'monorepo-cli'];
+    public array $ignorePackages    =  [];
     public string $packageDir       =  'packages';
 
     public string $monorepoConfig;

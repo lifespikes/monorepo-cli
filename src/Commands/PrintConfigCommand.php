@@ -14,11 +14,13 @@ class PrintConfigCommand extends BaseCommand
             ->setDescription('Print out current config');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $config = \LifeSpikes\MonorepoCLI\config()->all();
 
         $output->writeln('Config:');
         $output->writeln(json_encode($config, JSON_PRETTY_PRINT));
+
+        return 0;
     }
 }

@@ -28,7 +28,7 @@ class CreatePackageCommand extends BaseCommand
             );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Creating new monorepo package...');
 
@@ -52,6 +52,8 @@ class CreatePackageCommand extends BaseCommand
 
         symplifyCmd('merge');
         composerCmd('update');
+
+        return 0;
     }
 
     public function createComposerFile(MonorepoPackage $package, ?string $providerName = null)
