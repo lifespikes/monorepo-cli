@@ -1,18 +1,20 @@
 {
-    "name": "lifespikes/monorepo-installer",
+    "name": "lifespikes/monorepo-cli",
     "type": "composer-plugin",
     "require": {
-        "composer-plugin-api": "^2.0"
-    },
-    "require-dev": {
-        "composer/composer": "^2.0"
+        "composer-plugin-api": "^2.0",
+        "composer/composer": "^2.0",
+        "symplify/monorepo-builder": ">=10.1.4"
     },
     "autoload": {
         "psr-4": {
-            "LifeSpikes\\MonorepoInstaller\\": "src"
-        }
+            "LifeSpikes\\MonorepoCLI\\": "src"
+        },
+        "files": [
+            "src/Functions.php"
+        ]
     },
     "extra": {
-        "class": "LifeSpikes\\MonorepoInstaller\\MonorepoInstallerPlugin"
+        "class": "LifeSpikes\\MonorepoCLI\\ComposerPlugin"
     }
 }

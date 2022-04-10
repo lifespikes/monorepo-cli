@@ -1,30 +1,31 @@
 <?php
 
-namespace LifeSpikes\MonorepoInstaller\Commands;
+namespace LifeSpikes\MonorepoCLI\Commands;
 
-use RuntimeException;
+use MonorepoPackage;
 use Psr\Log\LogLevel;
 use Composer\Command\BaseCommand;
-use Symfony\Component\Console\Input\Input;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Output\OutputInterface;
+use function LifeSpikes\MonorepoCLI\composerCmd;
+use function LifeSpikes\MonorepoCLI\symplifyCmd;
 
 class CreatePackageCommand extends BaseCommand
 {
-    public function cwd(string $path): string
-    {
-        return getcwd() . DIRECTORY_SEPARATOR . $path;
-    }
-
     public function configure()
     {
-        $this->setName('workspace:create');
-        $this->setDescription('Create and initialize a new monorepo package');
-        $this->setDefinition(new InputDefinition([
-            new InputArgument('name', InputArgument::REQUIRED, 'Name of the package')
-        ]));
+        $this->setName('workspace:create')
+            ->setDescription('Create and initialize a new monorepo package')
+            ->addArgument('name', InputArgument::REQUIRED, 'The name of the package')
+            ->addOption(
+                'provider',
+                'p',
+                InputOption::VALUE_REQUIRED,
+                'Whether or not to create a service provider',
+                true
+            );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -33,128 +34,64 @@ class CreatePackageCommand extends BaseCommand
 
         /* Prepare package */
 
-        $package = $input->getArgument('name');
-        $vendor = $this->getAppVendor();
-        $directory = $this->verifyFileStructure($package);
+        $package = new MonorepoPackage(
+            $input->getArgument('name'),
+            $input->getOption('provider')
+        );
 
-        /* Create files */
+        $output->writeln("Creating package \"{$package->name}\"...");
 
-        $output->writeln("Manifesting service provider for $vendor/$package");
-        [$namespace, $provider, $packageName] =
-            $this->createServiceProvider($directory, $vendor, $package);
-
-        $output->writeln('Writing package composer file...');
-        $this->createComposerFile($directory, $packageName, $namespace, $provider);
+        $this->createComposerFile(
+            $package,
+            !$package->hasProvider ?: $this->createServiceProvider($package)
+        );
 
         /* Register in root */
 
-        /**
-         * Deprecating in favor of monorepo builder
-         * $output->writeln('Registering as a local repository...');
-         * $this->registerLocalRepo($package);
-         */
-
         $output->writeln('Registering as a monorepo package...');
 
-        passthru('vendor/bin/monorepo-builder merge');
-        passthru('composer update');
-
-        $output->writeln('Done! Feel free to add this package as a dependency');
+        symplifyCmd('merge');
+        composerCmd('update');
     }
 
-    public function registerLocalRepo(string $package)
-    {
-        $config = $this->getApplication()->getComposer()
-            ->getConfig()
-            ->getConfigSource()
-            ->getName();
-
-        $json = json_decode(file_get_contents($config), true);
-
-        $json['repositories'][] = [
-            'type'  =>  'path',
-            'url'   =>  "packages/$package"
-        ];
-
-        file_put_contents($config, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-    }
-
-    public function createComposerFile(string $target, string $packageName, string $namespace, string $provider)
+    public function createComposerFile(MonorepoPackage $package, ?string $providerName = null)
     {
         $composerFile = json_encode([
-            'name'      =>  $packageName,
+            'name'      =>  $package->name,
             'autoload'  =>  [
                 'psr-4' =>  [
-                    $namespace   =>  'src'
+                    $package->namespace   =>  'src'
                 ]
             ],
-            'extra'     =>  [
-                'laravel'   =>  [
-                    'providers' =>  [$provider]
+            ...($package->hasProvider ? [
+                'extra'     =>  [
+                    'laravel'   =>  [
+                        'providers' =>  [$providerName]
+                    ]
                 ]
-            ]
+            ] : [])
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
         file_put_contents(
-            "$target/composer.json",
+            "$package->directory/composer.json",
             $composerFile
         );
     }
 
-    public function createServiceProvider(string $target, string $vendor, string $package): array
+    public function createServiceProvider(MonorepoPackage $package): string
     {
-        $pkgCamelCase = $this->getCamelCase($package);
-        $provider = "{$pkgCamelCase}Provider";
-        $namespace = $this->getCamelCase($vendor) . '\\' . $pkgCamelCase . '\\';
+        $provider = "{$package->camelName}Provider";
 
         $this->getApplication()->getIO()
             ->log(LogLevel::INFO, "Installing service provider");
 
         $stub = str_replace(
-            ['_provider', '_namespace'], [$provider, rtrim($namespace, '\\')],
+            ['_provider', '_namespace'], [$provider, rtrim($package->namespace, '\\')],
             file_get_contents(__DIR__.'/../../stubs/service-provider.stub')
         );
 
-        file_put_contents("$target/src/$provider.php", $stub);
+        file_put_contents("$package->directory/src/$provider.php", $stub);
 
-        return [
-            $namespace,
-            $namespace . $provider,
-            "$vendor/$package"
-        ];
-    }
-
-    public function getAppVendor(): string
-    {
-        return explode(
-            '/',
-            $this->getApplication()->getComposer()->getPackage()->getName()
-        )[1];
-    }
-
-    public function getCamelCase(string $string): string
-    {
-        return implode('',
-            array_map(fn ($s) => ucfirst($s), explode('-', $string))
-        );
-    }
-
-    public function verifyFileStructure(string $package): string
-    {
-        $packageDir = $this->cwd('packages');
-        $target = "$packageDir/$package";
-
-        if (!ctype_alpha(str_replace('-', '', $package))) {
-            throw new RuntimeException('Package names may only have letters and dashes.');
-        }
-
-        if (file_exists($target)) {
-            throw new RuntimeException("$package package directory already exists.");
-        }
-
-        mkdir($target);
-        mkdir("$target/src");
-
-        return $target;
+        return $package->namespace . $provider;
     }
 }

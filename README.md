@@ -15,9 +15,23 @@ M.I. primarily does two things:
  - Runs `vendor/bin/monorepo-builder merge` upon a package installation.
 
 ## Installation
-To install, just run `composer require lifespikes/monorepo-installer`. You'll
+To install, just run `composer require lifespikes/monorepo-cli`. You'll
 be able to use the plugin once it's activated on your composer file.
 
 ## Configuration
-There are no configuration options for this plugin. Features to support custom
-package paths and other things are planned.
+You can configure the plugin by using your `composer.json` `extra`
+section. Here are the options you can configure:
+
+```php
+'monorepo-cli' => [
+   'owner'             => 'myOrganization',
+   
+   'ignore-packages'   =>  ['laravel-bare', 'monorepo-cli'],
+   'package_dir'       =>  'packages',
+   
+   'binaries'          =>  [
+       'monorepo-builder'  =>  'vendor/bin/monorepo-builder',
+       'composer'          =>  'composer',
+   ]
+]
+```

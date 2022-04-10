@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeSpikes\MonorepoInstaller;
+namespace LifeSpikes\MonorepoCLI;
 
 use JsonException;
 use Composer\Composer;
@@ -9,17 +9,12 @@ use Composer\Plugin\Capable;
 use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PluginInterface;
 use Composer\EventDispatcher\EventSubscriberInterface;
-use LifeSpikes\MonorepoInstaller\Providers\CommandProvider;
-use LifeSpikes\MonorepoInstaller\Listeners\DelegatePackageRequire;
+use LifeSpikes\MonorepoCLI\Providers\CommandProvider;
+use LifeSpikes\MonorepoCLI\Listeners\DelegatePackageRequire;
 use Composer\Plugin\Capability\CommandProvider as ComposerCommandProvider;
 
-class MonorepoInstallerPlugin implements PluginInterface, Capable, EventSubscriberInterface
+class ComposerPlugin implements PluginInterface, Capable, EventSubscriberInterface
 {
-    /**
-     * @var array|string[] Don't feature these packages as install options
-     */
-    static array $ignorePackages = ['laravel-bare', 'monorepo-installer'];
-
     protected Composer $composer;
     protected IOInterface $io;
 
@@ -30,6 +25,8 @@ class MonorepoInstallerPlugin implements PluginInterface, Capable, EventSubscrib
      */
     public function activate(Composer $composer, IOInterface $io)
     {
+        config()->setComposer($composer);
+
         $this->composer = $composer;
         $this->io = $io;
     }

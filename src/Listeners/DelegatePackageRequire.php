@@ -1,16 +1,15 @@
 <?php
 
-namespace LifeSpikes\MonorepoInstaller\Listeners;
+namespace LifeSpikes\MonorepoCLI\Listeners;
 
 use Psr\Log\LogLevel;
 use RuntimeException;
 use Composer\Composer;
 use Composer\IO\IOInterface;
-use Composer\Command\BaseCommand;
 use Composer\Plugin\CommandEvent;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use LifeSpikes\MonorepoInstaller\MonorepoInstallerPlugin;
+use LifeSpikes\MonorepoCLI\ComposerPlugin;
+use function LifeSpikes\MonorepoCLI\symplifyCmd;
+use function LifeSpikes\MonorepoCLI\composerCmd;
 
 class DelegatePackageRequire
 {
@@ -22,7 +21,7 @@ class DelegatePackageRequire
         $packages = array_values(array_filter(
             glob("$root/packages/*"),
             fn (string $f) => file_exists("$f/composer.json")
-                && !in_array(basename($f), MonorepoInstallerPlugin::$ignorePackages)
+                && !in_array(basename($f), ComposerPlugin::$ignorePackages)
         ));
 
         if (!$event->getInput()->hasOption('--dry-run')) {
@@ -72,8 +71,8 @@ class DelegatePackageRequire
                 }
             }
 
-            passthru('vendor/bin/monorepo-builder merge');
-            passthru('composer update --no-plugins');
+            symplifyCmd('merge');
+            composerCmd('update --no-plugins');
 
             /* Prevent default behavior */
             exit(0);
