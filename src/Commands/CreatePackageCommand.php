@@ -2,7 +2,6 @@
 
 namespace LifeSpikes\MonorepoCLI\Commands;
 
-use MonorepoPackage;
 use Psr\Log\LogLevel;
 use Composer\Command\BaseCommand;
 use Symfony\Component\Console\Input\InputOption;
@@ -34,7 +33,7 @@ class CreatePackageCommand extends BaseCommand
 
         /* Prepare package */
 
-        $package = new MonorepoPackage(
+        $package = new \LifeSpikes\MonorepoCLI\Commands\Objects\MonorepoPackage(
             $input->getArgument('name'),
             $input->getOption('provider')
         );
