@@ -8,8 +8,8 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\CommandEvent;
 use LifeSpikes\MonorepoCLI\ComposerPlugin;
-use function LifeSpikes\MonorepoCLI\symplifyCmd;
-use function LifeSpikes\MonorepoCLI\composerCmd;
+use function LifeSpikes\MonorepoCLI\symplify_cmd;
+use function LifeSpikes\MonorepoCLI\composer_cmd;
 
 class DelegatePackageRequire
 {
@@ -71,8 +71,8 @@ class DelegatePackageRequire
                 }
             }
 
-            symplifyCmd('merge');
-            composerCmd('update --no-plugins');
+            symplify_cmd('merge');
+            composer_cmd('update --no-plugins');
 
             /* Prevent default behavior */
             exit(0);

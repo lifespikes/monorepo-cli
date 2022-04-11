@@ -8,8 +8,8 @@ use Composer\Command\BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function LifeSpikes\MonorepoCLI\symplifyCmd;
-use function LifeSpikes\MonorepoCLI\composerCmd;
+use function LifeSpikes\MonorepoCLI\symplify_cmd;
+use function LifeSpikes\MonorepoCLI\composer_cmd;
 use Symfony\Component\Console\Input\InputOption;
 
 class SymplifyReleaseCommand extends BaseCommand
@@ -30,8 +30,8 @@ class SymplifyReleaseCommand extends BaseCommand
         preg_grep('/^v\d+\.+\d+\.+\d+$/', [$package])
             ?: throw new RuntimeException('Invalid version name, must follow v0.0.0 scheme');
 
-        symplifyCmd("release $package" . $dryRun);
-        composerCmd('update');
+        symplify_cmd("release $package" . $dryRun);
+        composer_cmd('update');
 
         return 0;
     }

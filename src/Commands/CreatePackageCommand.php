@@ -9,8 +9,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function LifeSpikes\MonorepoCLI\composerCmd;
-use function LifeSpikes\MonorepoCLI\symplifyCmd;
+use function LifeSpikes\MonorepoCLI\composer_cmd;
+use function LifeSpikes\MonorepoCLI\symplify_cmd;
 
 class CreatePackageCommand extends BaseCommand
 {
@@ -50,8 +50,8 @@ class CreatePackageCommand extends BaseCommand
 
         $output->writeln('Registering as a monorepo package...');
 
-        symplifyCmd('merge');
-        composerCmd('update');
+        symplify_cmd('merge');
+        composer_cmd('update');
 
         return 0;
     }
