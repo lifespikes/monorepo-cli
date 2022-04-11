@@ -2,15 +2,10 @@
 
 namespace LifeSpikes\MonorepoCLI\Providers;
 
-use ArrayAccess;
-use Composer\Composer;
-
 class Config
 {
     static $_instance;
     private array $composer;
-
-    private array $config = [];
 
     /* OOP Config Props */
     public array $ignorePackages    =  [];

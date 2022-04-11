@@ -2,17 +2,21 @@
 
 namespace LifeSpikes\MonorepoCLI\Listeners;
 
+use JsonException;
 use Psr\Log\LogLevel;
 use RuntimeException;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\CommandEvent;
-use LifeSpikes\MonorepoCLI\ComposerPlugin;
+use function LifeSpikes\MonorepoCLI\config;
 use function LifeSpikes\MonorepoCLI\symplify_cmd;
 use function LifeSpikes\MonorepoCLI\composer_cmd;
 
 class DelegatePackageRequire
 {
+    /**
+     * @throws JsonException
+     */
     public function execute(CommandEvent $event, Composer $composer, IOInterface $io)
     {
         $args = $event->getInput()->getArguments();
@@ -21,7 +25,7 @@ class DelegatePackageRequire
         $packages = array_values(array_filter(
             glob("$root/packages/*"),
             fn (string $f) => file_exists("$f/composer.json")
-                && !in_array(basename($f), ComposerPlugin::$ignorePackages)
+                && !in_array(basename($f), config()->ignorePackages)
         ));
 
         if (!$event->getInput()->hasOption('--dry-run')) {

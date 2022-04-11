@@ -2,7 +2,8 @@
 
 namespace LifeSpikes\MonorepoCLI\Commands\Objects;
 
-use function \LifeSpikes\MonorepoCLI\config;
+use RuntimeException;
+use function LifeSpikes\MonorepoCLI\config;
 
 class MonorepoPackage
 {
@@ -17,7 +18,7 @@ class MonorepoPackage
     public function __construct(string $kebabPackage, public bool $hasProvider = true)
     {
         $this->vendor = config()->owner;
-        $this->name = "{$this->vendor}/$kebabPackage";
+        $this->name = "$this->vendor/$kebabPackage";
         $this->camelName = $this->getCamelCase($kebabPackage);
         $this->directory = $this->getTargetDirectory($kebabPackage);
         $this->namespace = $this->getCamelCase($this->vendor) . '\\' . $this->camelName . '\\';
@@ -33,7 +34,7 @@ class MonorepoPackage
     public function getTargetDirectory(string $package): string
     {
         $config = config();
-        $packageDir = realpath($config->cwd . '/' . $config->packageDir);
+        $packageDir = realpath($config->packageDir);
         $target = $packageDir . '/' . $package;
 
         if (!$target) {

@@ -3,9 +3,9 @@
 namespace LifeSpikes\MonorepoCLI\Workers;
 
 use PharIo\Version\Version;
-use League\Flysystem\Filesystem;
 use LifeSpikes\MonorepoCLI\Enums\PackageType;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
+use function sprintf;
 use function LifeSpikes\MonorepoCLI\rrmdir;
 use function LifeSpikes\MonorepoCLI\package_paths;
 
@@ -13,7 +13,7 @@ class CopyReleaseFileWorker implements ReleaseWorkerInterface
 {
     public function getDescription(Version $version): string
     {
-        return \sprintf(
+        return sprintf(
             'Copying "%s" release workflows to all packages',
             $version->getOriginalString()
         );

@@ -3,7 +3,6 @@
 namespace LifeSpikes\MonorepoCLI\Commands;
 
 use RuntimeException;
-use ReflectionObject;
 use Composer\Command\BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

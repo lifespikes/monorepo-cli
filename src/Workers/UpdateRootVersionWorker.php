@@ -5,6 +5,7 @@ namespace LifeSpikes\MonorepoCLI\Workers;
 use PharIo\Version\Version;
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
+use function sprintf;
 use function LifeSpikes\MonorepoCLI\cwd_path;
 
 class UpdateRootVersionWorker implements ReleaseWorkerInterface
@@ -18,7 +19,7 @@ class UpdateRootVersionWorker implements ReleaseWorkerInterface
 
     public function getDescription(Version $version): string
     {
-        return \sprintf('Match root package version to "%s"', $version->getOriginalString());
+        return sprintf('Match root package version to "%s"', $version->getOriginalString());
     }
 
     public function work(Version $version): void

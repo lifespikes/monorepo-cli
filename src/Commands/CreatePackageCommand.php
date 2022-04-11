@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use LifeSpikes\MonorepoCLI\Commands\Objects\MonorepoPackage;
 use function LifeSpikes\MonorepoCLI\composer_cmd;
 use function LifeSpikes\MonorepoCLI\symplify_cmd;
 
@@ -33,12 +34,12 @@ class CreatePackageCommand extends BaseCommand
 
         /* Prepare package */
 
-        $package = new \LifeSpikes\MonorepoCLI\Commands\Objects\MonorepoPackage(
+        $package = new MonorepoPackage(
             $input->getArgument('name'),
             $input->getOption('provider')
         );
 
-        $output->writeln("Creating package \"{$package->name}\"...");
+        $output->writeln("Creating package \"$package->name\"...");
 
         $this->createComposerFile(
             $package,

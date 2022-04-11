@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Composer\Composer;
-use Composer\Autoload\ClassLoader;
 use LifeSpikes\MonorepoCLI\Enums\PackageType;
 use Symplify\MonorepoBuilder\ValueObject\Option;
 use LifeSpikes\MonorepoCLI\Workers\CopyReleaseFileWorker;
@@ -21,7 +19,6 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualDependenciesR
 use function LifeSpikes\MonorepoCLI\package_list;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    $composer = new Composer();
     $parameters = $containerConfigurator->parameters();
     $services = $containerConfigurator->services();
 

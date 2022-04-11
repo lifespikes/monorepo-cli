@@ -6,6 +6,7 @@ use PharIo\Version\Version;
 use LifeSpikes\MonorepoCLI\Enums\PackageType;
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
+use function sprintf;
 use function LifeSpikes\MonorepoCLI\package_paths;
 
 class NpmVersionMatchWorker implements ReleaseWorkerInterface
@@ -19,7 +20,7 @@ class NpmVersionMatchWorker implements ReleaseWorkerInterface
 
     public function getDescription(Version $version): string
     {
-        return \sprintf('Match node package versions to "%s"', $version->getOriginalString());
+        return sprintf('Match node package versions to "%s"', $version->getOriginalString());
     }
 
     public function work(Version $version): void
