@@ -1,5 +1,7 @@
 <?php
 
+namespace LifeSpikes\MonorepoCLI\Commands\Objects;
+
 use function \LifeSpikes\MonorepoCLI\config;
 
 class MonorepoPackage
