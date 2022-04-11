@@ -3,6 +3,7 @@
 namespace LifeSpikes\MonorepoCLI\Workers;
 
 use PharIo\Version\Version;
+use League\Flysystem\Filesystem;
 use LifeSpikes\MonorepoCLI\Enums\PackageType;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 use function LifeSpikes\MonorepoCLI\rrmdir;
@@ -35,6 +36,10 @@ class CopyReleaseFileWorker implements ReleaseWorkerInterface
 
         if (file_exists($workflows)) {
             rrmdir($workflows);
+        }
+
+        if (!file_exists("$path/.github")) {
+            mkdir("$path/.github");
         }
 
         mkdir($workflows);
