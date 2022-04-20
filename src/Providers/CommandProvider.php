@@ -2,6 +2,7 @@
 
 namespace LifeSpikes\MonorepoCLI\Providers;
 
+use LifeSpikes\MonorepoCLI\Commands\KahlanTestCommand;
 use LifeSpikes\MonorepoCLI\Commands\PrintConfigCommand;
 use LifeSpikes\MonorepoCLI\Commands\CreatePackageCommand;
 use LifeSpikes\MonorepoCLI\Commands\SymplifyBuilderCommand;
@@ -16,7 +17,8 @@ class CommandProvider implements ComposerCommandProvider
             new CreatePackageCommand(),
             new SymplifyBuilderCommand(),
             new SymplifyReleaseCommand(),
-            new PrintConfigCommand()
+            new PrintConfigCommand(),
+            new KahlanTestCommand()
         ];
     }
 }

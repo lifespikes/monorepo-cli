@@ -17,6 +17,7 @@ class Config
 
     public string $monorepoConfig;
     public string $monorepoBuilderBin;
+    public string $kahlanBin;
     public string $composerBin =  'composer';
 
     public function __construct()
@@ -24,7 +25,7 @@ class Config
         $this->setComposer();
     }
 
-    public function setComposer()
+    public function setComposer(): void
     {
         $this->composer = json_decode(
             file_get_contents(getcwd() . '/composer.json'),
@@ -44,7 +45,7 @@ class Config
         return self::$_instance;
     }
 
-    protected function setDefaultConfig()
+    protected function setDefaultConfig(): void
     {
         $defaultConfigFile = realpath(__DIR__ . '/../../monorepo-builder.php');
         $root = $this->composer['name'];
@@ -55,9 +56,10 @@ class Config
         $this->owner = $owner;
         $this->monorepoConfig = $defaultConfigFile;
         $this->monorepoBuilderBin = $this->cwd . '/vendor/bin/monorepo-builder';
+        $this->kahlanBin = $this->cwd . '/vendor/bin/kahlan';
     }
 
-    public function applyUserConfig()
+    public function applyUserConfig(): void
     {
         $extra = $this->composer['extra'] ?? [];
 
