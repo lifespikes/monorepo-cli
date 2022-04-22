@@ -84,6 +84,18 @@ if (!function_exists('LifeSpikes\MonorepoCLI\kahlan_cmd')) {
     }
 }
 
+if (!function_exists('LifeSpikes\MonorepoCLI\pest_cmd')) {
+    /**
+     * Execute a kahlan command
+     */
+    function pest_cmd(string $cmd): void
+    {
+        shell_cmd(
+            sprintf('%s %s', \LifeSpikes\MonorepoCLI\config()->pestBin, $cmd),
+        );
+    }
+}
+
 if (!function_exists('LifeSpikes\MonorepoCLI\get_packages')) {
     /**
      * Get a list of Node or Composer packages

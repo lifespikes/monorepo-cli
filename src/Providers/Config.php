@@ -18,7 +18,10 @@ class Config
     public string $monorepoConfig;
     public string $monorepoBuilderBin;
     public string $kahlanBin;
+    public string $pestBin;
     public string $composerBin =  'composer';
+
+    public string $testEngine = 'pest';
 
     public function __construct()
     {
@@ -57,6 +60,7 @@ class Config
         $this->monorepoConfig = $defaultConfigFile;
         $this->monorepoBuilderBin = $this->cwd . '/vendor/bin/monorepo-builder';
         $this->kahlanBin = $this->cwd . '/vendor/bin/kahlan';
+        $this->pestBin = $this->cwd . '/vendor/bin/pest';
     }
 
     public function applyUserConfig(): void
