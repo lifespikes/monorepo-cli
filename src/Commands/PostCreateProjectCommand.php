@@ -70,10 +70,7 @@ class PostCreateProjectCommand extends BaseCommand
             ]
         ];
 
-        $content = json_encode($contents, JSON_PRETTY_PRINT);
-        echo "wrote $content to $path";
-
-//        file_put_contents($path, );
+        file_put_contents($path, json_encode($contents, JSON_PRETTY_PRINT));
     }
 
     private function askForPackageInfo($helper, $input, $output): array|bool
