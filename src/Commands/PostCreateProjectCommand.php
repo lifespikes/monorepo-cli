@@ -46,7 +46,7 @@ class PostCreateProjectCommand extends BaseCommand
 
             shell_cmd('php artisan key:generate');
 
-            $output->writeln('<success>Ready! Build something beautiful!</success>');
+            $output->writeln('<comment>Ready! Now go and build something beautiful!</comment>');
 
             return 0;
         }
