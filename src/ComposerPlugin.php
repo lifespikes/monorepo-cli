@@ -8,8 +8,8 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\Capable;
 use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PluginInterface;
-use Composer\EventDispatcher\EventSubscriberInterface;
 use LifeSpikes\MonorepoCLI\Providers\CommandProvider;
+use Composer\EventDispatcher\EventSubscriberInterface;
 use LifeSpikes\MonorepoCLI\Listeners\DelegatePackageRequire;
 use Composer\Plugin\Capability\CommandProvider as ComposerCommandProvider;
 
@@ -48,7 +48,7 @@ class ComposerPlugin implements PluginInterface, Capable, EventSubscriberInterfa
     public function getCapabilities(): array
     {
         return [
-            ComposerCommandProvider::class  =>  CommandProvider::class
+            ComposerCommandProvider::class => CommandProvider::class
         ];
     }
 
@@ -58,7 +58,7 @@ class ComposerPlugin implements PluginInterface, Capable, EventSubscriberInterfa
     public static function getSubscribedEvents(): array
     {
         return [
-            'command'   =>  'onComposerCommand',
+            'command' => 'onComposerCommand',
         ];
     }
 
@@ -66,6 +66,11 @@ class ComposerPlugin implements PluginInterface, Capable, EventSubscriberInterfa
      * Abstractions from interface
      */
 
-    public function deactivate(Composer $composer, IOInterface $io) { }
-    public function uninstall(Composer $composer, IOInterface $io) { }
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+    }
 }

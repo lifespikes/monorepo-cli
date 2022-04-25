@@ -4,12 +4,12 @@ namespace LifeSpikes\MonorepoCLI\Commands;
 
 use RuntimeException;
 use Composer\Command\BaseCommand;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function LifeSpikes\MonorepoCLI\symplify_cmd;
 use function LifeSpikes\MonorepoCLI\composer_cmd;
-use Symfony\Component\Console\Input\InputOption;
+use function LifeSpikes\MonorepoCLI\symplify_cmd;
 
 class SymplifyReleaseCommand extends BaseCommand
 {

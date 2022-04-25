@@ -59,16 +59,16 @@ class CreatePackageCommand extends BaseCommand
     public function createComposerFile(MonorepoPackage $package, ?string $providerName = null)
     {
         $composerFile = json_encode([
-            'name'      =>  $package->name,
-            'autoload'  =>  [
-                'psr-4' =>  [
-                    $package->namespace   =>  'src'
+            'name' => $package->name,
+            'autoload' => [
+                'psr-4' => [
+                    $package->namespace => 'src'
                 ]
             ],
             ...($package->hasProvider ? [
-                'extra'     =>  [
-                    'laravel'   =>  [
-                        'providers' =>  [$providerName]
+                'extra' => [
+                    'laravel' => [
+                        'providers' => [$providerName]
                     ]
                 ]
             ] : [])
@@ -88,8 +88,9 @@ class CreatePackageCommand extends BaseCommand
             ->log(LogLevel::INFO, "Installing service provider");
 
         $stub = str_replace(
-            ['_provider', '_namespace'], [$provider, rtrim($package->namespace, '\\')],
-            file_get_contents(__DIR__.'/../../stubs/service-provider.stub')
+            ['_provider', '_namespace'],
+            [$provider, rtrim($package->namespace, '\\')],
+            file_get_contents(__DIR__ . '/../../stubs/service-provider.stub')
         );
 
         file_put_contents("$package->directory/src/$provider.php", $stub);

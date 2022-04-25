@@ -4,11 +4,11 @@ namespace LifeSpikes\MonorepoCLI\Providers;
 
 class Config
 {
-    static $_instance;
+    public static $_instance;
     private array $composer;
 
     /* OOP Config Props */
-    public array $ignorePackages    =  [];
+    public array $ignorePackages = [];
 
     public string $cwd;
     public string $owner;
@@ -19,7 +19,7 @@ class Config
     public string $monorepoBuilderBin;
     public string $kahlanBin;
     public string $pestBin;
-    public string $composerBin =  'composer';
+    public string $composerBin = 'composer';
 
     public string $testEngine = 'pest';
 

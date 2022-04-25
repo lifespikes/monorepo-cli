@@ -42,7 +42,7 @@ class NpmVersionMatchWorker implements ReleaseWorkerInterface
         }
 
         $this->processRunner->run(
-            'git add '. implode(' ', $manifests).' && git commit -m "Update package.json versions"'
+            'git add ' . implode(' ', $manifests) . ' && git commit -m "Update package.json versions"'
         );
     }
 }

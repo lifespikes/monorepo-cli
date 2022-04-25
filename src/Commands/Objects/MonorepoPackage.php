@@ -26,7 +26,8 @@ class MonorepoPackage
 
     public function getCamelCase(string $string): string
     {
-        return implode('',
+        return implode(
+            '',
             array_map(fn ($s) => ucfirst($s), explode('-', $string))
         );
     }

@@ -2,18 +2,17 @@
 
 namespace LifeSpikes\MonorepoCLI\Commands;
 
+use RuntimeException;
 use Composer\Command\BaseCommand;
 use LifeSpikes\MonorepoCLI\Enums\PackageType;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use function LifeSpikes\MonorepoCLI\config;
 use function LifeSpikes\MonorepoCLI\pest_cmd;
 use function LifeSpikes\MonorepoCLI\cwd_path;
 use function LifeSpikes\MonorepoCLI\kahlan_cmd;
-use function LifeSpikes\MonorepoCLI\get_packages;
-use function LifeSpikes\MonorepoCLI\package_list;
 use function LifeSpikes\MonorepoCLI\package_paths;
-use function \LifeSpikes\MonorepoCLI\config;
 
 class TestPackagesCommand extends BaseCommand
 {
@@ -23,7 +22,7 @@ class TestPackagesCommand extends BaseCommand
     {
         $this->setName('workspace:test')
             ->addArgument('package', InputArgument::OPTIONAL, 'Test a specific package', 'All')
-            ->setDescription('Run test suites of one or all packages with Kahlan');
+            ->setDescription('Run test suites of one or all packages');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -68,6 +67,8 @@ class TestPackagesCommand extends BaseCommand
         }
 
         if (($engine = config()->testEngine) === 'kahlan') {
+            throw new RuntimeException('Kahlan was disabled as a testing engine');
+
             kahlan_cmd(sprintf(
                 '--src="%s" --spec="%s" --grep="*Test.php" --grep="*test.php" --ff=2 --cc',
                 $path . '/src',
