@@ -46,13 +46,8 @@ class PostCreateProjectCommand extends BaseCommand
 
             shell_cmd('php artisan key:generate');
 
-            $output->writeln('<info>Removing unnecessary scaffold files...</info>');
-
-            shell_cmd('rm CHANGELOG.md');
-            shell_cmd('rm README.md');
-            shell_cmd("echo \"# $project[name]\n$project[description]\" > README.md");
-
             $output->writeln('<comment>Ready! Now go and build something beautiful!</comment>');
+            $output->writeln('<comment>TIP: Change the default project readme to get started.</comment>');
 
             return 0;
         }
