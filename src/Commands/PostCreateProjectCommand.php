@@ -66,7 +66,7 @@ class PostCreateProjectCommand extends BaseCommand
                 'ignorePackages'    =>  [
                     'monorepo-cli'
                 ],
-                'owner' =>  $package
+                'owner' =>  $package['name']
             ]
         ];
 
