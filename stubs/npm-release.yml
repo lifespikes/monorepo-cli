@@ -21,11 +21,17 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-node@v2
+      - name: Build
+        uses: actions/setup-node@v3
         with:
           node-version: '16.x'
           registry-url: 'https://npm.pkg.github.com'
+          cache: 'yarn'
           scope: '@lifespikes'
+        run: |
+          yarn install --frozen-lockfile --immutable
+          yarn tsc
+          rm -rf node_modules && rm -rf src && rm tsconfig.tsbuildinfo
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
