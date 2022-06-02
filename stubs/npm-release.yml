@@ -25,6 +25,7 @@ jobs:
           name: build-artifact
           path: .
   release:
+    needs: [build]
     runs-on: ubuntu-latest
     permissions:
       contents: read
