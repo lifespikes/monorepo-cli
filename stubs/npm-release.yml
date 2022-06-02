@@ -28,9 +28,6 @@ jobs:
   release:
     needs: [build]
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - uses: actions/checkout@master
       - uses: actions/download-artifact@v3
