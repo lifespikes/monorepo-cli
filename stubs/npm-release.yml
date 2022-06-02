@@ -19,7 +19,6 @@ jobs:
         run: |
           yarn install
           yarn build
-          rm -rf node_modules && rm tsconfig.tsbuildinfo && rm -rf .github
       - uses: actions/upload-artifact@v3
         with:
           name: build-artifact
@@ -31,6 +30,7 @@ jobs:
       contents: read
       packages: write
     steps:
+      - uses: actions/checkout@master
       - uses: actions/download-artifact@v3
         with:
           name: build-artifact
