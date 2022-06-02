@@ -7,6 +7,10 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        GITHUB_REPOSITORY: [lifespikes/nacha-file, lifespikes/pdf-mutator]
+    if: github.repository == ${{ matrix.repositories }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -23,7 +27,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: build-artifact
-          path: .
+          path: dist/
   release:
     needs: [build]
     runs-on: ubuntu-latest
