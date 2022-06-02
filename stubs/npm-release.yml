@@ -18,7 +18,7 @@ jobs:
           scope: '@lifespikes'
       - name: Run build
         run: |
-          yarn install --frozen-lockfile --immutable
+          yarn install
           yarn build
           rm -rf node_modules && rm tsconfig.tsbuildinfo && rm -rf .github
       - uses: actions/upload-artifact@v3
