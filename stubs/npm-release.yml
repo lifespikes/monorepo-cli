@@ -6,33 +6,49 @@ on:
       - 'v*'
 
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-  publish:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@master
-      - name: Build
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
           registry-url: 'https://npm.pkg.github.com'
           cache: 'yarn'
           scope: '@lifespikes'
+      - name: Run build
+        run: |
+          yarn install --frozen-lockfile --immutable
+          yarn build
+          rm -rf node_modules && rm tsconfig.tsbuildinfo && rm -rf .github
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: .
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://npm.pkg.github.com'
+          cache: 'yarn'
+          scope: '@lifespikes'
+      - name: Build
         run: |
           yarn install --frozen-lockfile --immutable
           yarn tsc
           rm -rf node_modules && rm -rf src && rm tsconfig.tsbuildinfo
-      - run: npm publish
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
