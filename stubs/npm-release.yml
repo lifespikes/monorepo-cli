@@ -7,10 +7,7 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        GITHUB_REPOSITORY: [lifespikes/nacha-file, lifespikes/pdf-mutator]
-    if: github.repository == ${{ matrix.repositories }}
+    if: (github.repository == 'lifespikes/pdf-mutator' || github.repository == 'lifespikes/nacha-file')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
