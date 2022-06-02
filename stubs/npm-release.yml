@@ -29,11 +29,11 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     permissions:
-      - contents: read|write
-      - pull_requests: read|write
-      - packages: read|write
-      - checks: read|write
-      - statuses: read|write
+      contents: read|write
+      pull_requests: read|write
+      packages: read|write
+      checks: read|write
+      statuses: read|write
     steps:
       - uses: actions/checkout@master
       - uses: actions/download-artifact@v3
