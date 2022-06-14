@@ -34,6 +34,12 @@ class CopyReleaseFileWorker implements ReleaseWorkerInterface
     {
         $workflows = "$path/.github/workflows";
 
+        // dirty way of stopping pdf mutator lambda deployment workflow from
+        // being deleted
+        if (str_contains($path, 'pdf-mutator')) {
+            return;
+        }
+
         if (file_exists($workflows)) {
             rrmdir($workflows);
         }
