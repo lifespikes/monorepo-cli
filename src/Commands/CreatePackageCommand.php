@@ -82,7 +82,7 @@ class CreatePackageCommand extends BaseCommand
 
     public function createServiceProvider(MonorepoPackage $package): string
     {
-        $provider = "{$package->camelName}Provider";
+        $provider = "{$package->camelName}ServiceProvider";
 
         $this->getApplication()->getIO()
             ->log(LogLevel::INFO, "Installing service provider");
