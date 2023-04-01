@@ -3,10 +3,10 @@
 namespace LifeSpikes\MonorepoCLI\Workers;
 
 use PharIo\Version\Version;
+use LifeSpikes\MonorepoCLI\Functions;
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 use function sprintf;
-use function LifeSpikes\MonorepoCLI\cwd_path;
 
 class UpdateRootVersionWorker implements ReleaseWorkerInterface
 {
@@ -24,7 +24,7 @@ class UpdateRootVersionWorker implements ReleaseWorkerInterface
 
     public function work(Version $version): void
     {
-        $rootComposer = cwd_path('composer.json');
+        $rootComposer = Functions::cwd_path('composer.json');
 
         if (file_exists($rootComposer)) {
             $file = json_decode(file_get_contents($rootComposer), true);

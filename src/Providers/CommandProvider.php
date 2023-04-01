@@ -2,7 +2,6 @@
 
 namespace LifeSpikes\MonorepoCLI\Providers;
 
-use LifeSpikes\MonorepoCLI\Commands\KahlanTestCommand;
 use LifeSpikes\MonorepoCLI\Commands\PrintConfigCommand;
 use LifeSpikes\MonorepoCLI\Commands\TestPackagesCommand;
 use LifeSpikes\MonorepoCLI\Commands\CreatePackageCommand;

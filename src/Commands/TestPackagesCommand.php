@@ -4,15 +4,11 @@ namespace LifeSpikes\MonorepoCLI\Commands;
 
 use RuntimeException;
 use Composer\Command\BaseCommand;
+use LifeSpikes\MonorepoCLI\Functions;
 use LifeSpikes\MonorepoCLI\Enums\PackageType;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function LifeSpikes\MonorepoCLI\config;
-use function LifeSpikes\MonorepoCLI\pest_cmd;
-use function LifeSpikes\MonorepoCLI\cwd_path;
-use function LifeSpikes\MonorepoCLI\kahlan_cmd;
-use function LifeSpikes\MonorepoCLI\package_paths;
 
 class TestPackagesCommand extends BaseCommand
 {
@@ -30,12 +26,12 @@ class TestPackagesCommand extends BaseCommand
         $this->output = $output;
         $package = $input->getArgument('package');
 
-        $output->writeln('<info>Using testing engine: </info>' . config()->testEngine);
+        $output->writeln('<info>Using testing engine: </info>' . Functions::config()->testEngine);
 
         if ($package === 'All') {
             $output->writeln('Running tests for all packages');
 
-            foreach (package_paths(PackageType::COMPOSER) as $path) {
+            foreach (Functions::package_paths(PackageType::COMPOSER) as $path) {
                 $this->runPackageTests($path);
             }
 
@@ -44,7 +40,7 @@ class TestPackagesCommand extends BaseCommand
             return 0;
         }
 
-        if (!($packagePath = realpath(__DIR__ . '/' . config()->packageDir . '/' . $package))) {
+        if (!($packagePath = realpath(__DIR__ . '/' . Functions::config()->packageDir . '/' . $package))) {
             $output->writeln('<error>Package not found</error>');
             return 1;
         }
@@ -66,19 +62,13 @@ class TestPackagesCommand extends BaseCommand
             return;
         }
 
-        if (($engine = config()->testEngine) === 'kahlan') {
+        if (($engine = Functions::config()->testEngine) === 'kahlan') {
             throw new RuntimeException('Kahlan was disabled as a testing engine');
-
-            kahlan_cmd(sprintf(
-                '--src="%s" --spec="%s" --grep="*Test.php" --grep="*test.php" --ff=2 --cc',
-                $path . '/src',
-                $path . '/tests'
-            ));
         } elseif ($engine === 'pest') {
-            pest_cmd(sprintf(
+            Functions::pest_cmd(sprintf(
                 '--test-directory "%s" --bootstrap "%s" --stop-on-failure',
                 $path . '/tests',
-                cwd_path('vendor/autoload.php')
+                Functions::cwd_path('vendor/autoload.php')
             ));
         }
     }

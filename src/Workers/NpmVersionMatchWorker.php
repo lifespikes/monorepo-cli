@@ -3,11 +3,11 @@
 namespace LifeSpikes\MonorepoCLI\Workers;
 
 use PharIo\Version\Version;
+use LifeSpikes\MonorepoCLI\Functions;
 use LifeSpikes\MonorepoCLI\Enums\PackageType;
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 use function sprintf;
-use function LifeSpikes\MonorepoCLI\package_paths;
 
 class NpmVersionMatchWorker implements ReleaseWorkerInterface
 {
@@ -25,7 +25,7 @@ class NpmVersionMatchWorker implements ReleaseWorkerInterface
 
     public function work(Version $version): void
     {
-        $packages = package_paths(PackageType::NODE);
+        $packages = Functions::package_paths(PackageType::NODE);
         $manifests = [];
 
         foreach ($packages as $package) {

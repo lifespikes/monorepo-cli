@@ -2,19 +2,12 @@
 
 namespace LifeSpikes\MonorepoCLI\Commands;
 
-use Psr\Log\LogLevel;
 use Composer\Command\BaseCommand;
-use Symfony\Component\Console\Input\InputOption;
+use LifeSpikes\MonorepoCLI\Functions;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use LifeSpikes\MonorepoCLI\Commands\Objects\MonorepoPackage;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use function LifeSpikes\MonorepoCLI\cwd_path;
-use function LifeSpikes\MonorepoCLI\shell_cmd;
-use function LifeSpikes\MonorepoCLI\composer_cmd;
-use function LifeSpikes\MonorepoCLI\symplify_cmd;
 
 class PostCreateProjectCommand extends BaseCommand
 {
@@ -38,13 +31,13 @@ class PostCreateProjectCommand extends BaseCommand
 
             $output->writeln('<comment>Preparing project...</comment>');
             $this->updateComposer($project);
-            composer_cmd('workspace:create backend');
+            Functions::composer_cmd('workspace:create backend');
 
-            if (!file_exists(cwd_path('.env'))) {
-                shell_cmd('cp .env.example .env');
+            if (!file_exists(Functions::cwd_path('.env'))) {
+                Functions::shell_cmd('cp .env.example .env');
             }
 
-            shell_cmd('php artisan key:generate');
+            Functions::shell_cmd('php artisan key:generate');
 
             $output->writeln('<comment>Ready! Now go and build something beautiful!</comment>');
             $output->writeln('<comment>TIP: Change the default project readme to get started.</comment>');
@@ -56,7 +49,7 @@ class PostCreateProjectCommand extends BaseCommand
     private function updateComposer(array $package)
     {
         $contents = json_decode(
-            file_get_contents(($path = cwd_path('composer.json'))),
+            file_get_contents(($path = Functions::cwd_path('composer.json'))),
             true
         );
 

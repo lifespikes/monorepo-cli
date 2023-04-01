@@ -25,7 +25,7 @@ class ComposerPlugin implements PluginInterface, Capable, EventSubscriberInterfa
      */
     public function activate(Composer $composer, IOInterface $io)
     {
-        config();
+        Functions::config();
 
         $this->composer = $composer;
         $this->io = $io;

@@ -4,13 +4,12 @@ namespace LifeSpikes\MonorepoCLI\Commands;
 
 use Psr\Log\LogLevel;
 use Composer\Command\BaseCommand;
+use LifeSpikes\MonorepoCLI\Functions;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use LifeSpikes\MonorepoCLI\Commands\Objects\MonorepoPackage;
-use function LifeSpikes\MonorepoCLI\composer_cmd;
-use function LifeSpikes\MonorepoCLI\symplify_cmd;
 
 class CreatePackageCommand extends BaseCommand
 {
@@ -50,8 +49,8 @@ class CreatePackageCommand extends BaseCommand
 
         $output->writeln('Registering as a monorepo package...');
 
-        symplify_cmd('merge');
-        composer_cmd('update');
+        Functions::symplify_cmd('merge');
+        Functions::composer_cmd('update');
 
         return 0;
     }

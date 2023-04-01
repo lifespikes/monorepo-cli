@@ -9,10 +9,7 @@
   "autoload": {
     "psr-4": {
       "LifeSpikes\\MonorepoCLI\\": "src"
-    },
-    "files": [
-      "src/Functions.php"
-    ]
+    }
   },
   "extra": {
     "class": "LifeSpikes\\MonorepoCLI\\ComposerPlugin"

@@ -3,11 +3,10 @@
 namespace LifeSpikes\MonorepoCLI\Workers;
 
 use PharIo\Version\Version;
+use LifeSpikes\MonorepoCLI\Functions;
 use LifeSpikes\MonorepoCLI\Enums\PackageType;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 use function sprintf;
-use function LifeSpikes\MonorepoCLI\rrmdir;
-use function LifeSpikes\MonorepoCLI\package_paths;
 
 class CopyReleaseFileWorker implements ReleaseWorkerInterface
 {
@@ -21,11 +20,11 @@ class CopyReleaseFileWorker implements ReleaseWorkerInterface
 
     public function work(Version $version): void
     {
-        foreach (package_paths(PackageType::NODE) as $path) {
+        foreach (Functions::package_paths(PackageType::NODE) as $path) {
             $this->createWorkflow($path, 'npm-release.yml');
         }
 
-        foreach (package_paths(PackageType::COMPOSER) as $path) {
+        foreach (Functions::package_paths(PackageType::COMPOSER) as $path) {
             $this->createWorkflow($path, 'composer-release.yml');
         }
     }
@@ -41,7 +40,7 @@ class CopyReleaseFileWorker implements ReleaseWorkerInterface
         }
 
         if (file_exists($workflows)) {
-            rrmdir($workflows);
+            Functions::rrmdir($workflows);
         }
 
         if (!file_exists("$path/.github")) {

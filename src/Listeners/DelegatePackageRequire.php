@@ -8,9 +8,7 @@ use RuntimeException;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\CommandEvent;
-use function LifeSpikes\MonorepoCLI\config;
-use function LifeSpikes\MonorepoCLI\symplify_cmd;
-use function LifeSpikes\MonorepoCLI\composer_cmd;
+use LifeSpikes\MonorepoCLI\Functions;
 
 class DelegatePackageRequire
 {
@@ -25,7 +23,7 @@ class DelegatePackageRequire
         $packages = array_values(array_filter(
             glob("$root/packages/*"),
             fn (string $f) => file_exists("$f/composer.json")
-                && !in_array(basename($f), config()->ignorePackages)
+                && !in_array(basename($f), Functions::config()->ignorePackages)
         ));
 
         if (!$event->getInput()->hasOption('--dry-run')) {
@@ -75,8 +73,8 @@ class DelegatePackageRequire
                 }
             }
 
-            symplify_cmd('merge');
-            composer_cmd('update --no-plugins');
+            Functions::symplify_cmd('merge');
+            Functions::composer_cmd('update --no-plugins');
 
             /* Prevent default behavior */
             exit(0);
