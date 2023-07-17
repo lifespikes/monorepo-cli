@@ -22,7 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
     $services = $containerConfigurator->services();
 
-    $packages = getenv('MONOREPO_CLI_PKG_DIR');
+    $packages = explode(',', getenv('MONOREPO_CLI_PKG_DIR'));
     $ignorePackages = explode(',', getenv('MONOREPO_CLI_IGNORE_DIRS'));
 
     if (!file_exists($packages) || !is_array($ignorePackages)) {
