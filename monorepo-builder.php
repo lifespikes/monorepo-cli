@@ -25,12 +25,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $packages = explode(',', getenv('MONOREPO_CLI_PKG_DIR'));
     $ignorePackages = explode(',', getenv('MONOREPO_CLI_IGNORE_DIRS'));
 
-    if (!file_exists($packages) || !is_array($ignorePackages)) {
+    if (!is_array($packages) || count(array_filter($packages, fn ($path) => !file_exists($path) || !is_dir($path))) > 0) {
+        throw new RuntimeException('Invalid environment variables - one or more package directories do not exist');
+    }
+
+    if (!is_array($ignorePackages)) {
         throw new RuntimeException('Invalid environment variables');
     }
 
     /* Include our package directory */
-    $parameters->set(Option::PACKAGE_DIRECTORIES, [$packages]);
+    $parameters->set(Option::PACKAGE_DIRECTORIES, $packages);
     $parameters->set(Option::PACKAGE_DIRECTORIES_EXCLUDES, $ignorePackages);
 
     /* Release workers */
