@@ -50,7 +50,7 @@ class Functions
         $config = self::config();
 
         $env = [
-            'MONOREPO_CLI_PKG_DIR='.$config->packageDir,
+            'MONOREPO_CLI_PKG_DIR='.implode(',', $config->packageDir),
             'MONOREPO_CLI_IGNORE_DIRS='.implode(',', [
                 ...self::package_list(PackageType::NODE),
                 ...$config->ignorePackages
@@ -101,11 +101,18 @@ class Functions
             ? 'package.json'
             : 'composer.json';
 
-        $matches = array_filter(
-            glob(self::config()->packageDir . '/*'),
-            fn ($path) => file_exists($path . '/' . $manifest)
-                && !in_array(basename($path), self::config()->ignorePackages)
-        );
+        $matches = [];
+
+        foreach (self::config()->packageDir as $packageDir) {
+            $matches = [
+                ...$matches,
+                ...array_filter(
+                    glob($packageDir . '/*'),
+                    fn ($path) => file_exists($path . '/' . $manifest)
+                        && !in_array(basename($path), self::config()->ignorePackages)
+                )
+            ];
+        }
 
         return $paths ? $matches : array_map('basename', $matches);
     }

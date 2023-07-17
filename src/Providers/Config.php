@@ -13,7 +13,7 @@ class Config
     public string $cwd;
     public string $owner;
 
-    public string $packageDir;
+    public array $packageDir = [];
 
     public string $monorepoConfig;
     public string $monorepoBuilderBin;
@@ -55,7 +55,7 @@ class Config
         $owner = explode('/', $root)[0];
 
         $this->cwd = getcwd();
-        $this->packageDir = $this->cwd . '/packages';
+        $this->packageDir = [$this->cwd . '/packages'];
         $this->owner = $owner;
         $this->monorepoConfig = $defaultConfigFile;
         $this->monorepoBuilderBin = $this->cwd . '/vendor/bin/monorepo-builder';

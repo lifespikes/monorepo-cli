@@ -40,7 +40,7 @@ class TestPackagesCommand extends BaseCommand
             return 0;
         }
 
-        if (!($packagePath = realpath(__DIR__ . '/' . Functions::config()->packageDir . '/' . $package))) {
+        if (!($packagePath = realpath(__DIR__ . '/' . Functions::config()->packageDir[0] . '/' . $package))) {
             $output->writeln('<error>Package not found</error>');
             return 1;
         }
